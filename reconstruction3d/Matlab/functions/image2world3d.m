@@ -1,4 +1,4 @@
-function [points3d] = image2world3d( depth_img, K, R, T )
+function [ points3d ] = image2world3d( depth_img, K, R, T )
 %IMAGE2WORLD3D 
 %   Generate a pointcloud on camera coordinates given a depth image, K 
 %   camera parameters matrix, R roatation matrix and T traslation matrix.

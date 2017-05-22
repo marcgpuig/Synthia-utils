@@ -10,7 +10,12 @@ function [ K ] = loadK( file )
 %    Return:
 %    - K: 3x3 matrix used for the camera matrix. If the the file does not
 %   exist, it returns an error.
+    % Read camera parameters
+    camera_param = double(load(camera_param_file));
+    fpixels = camera_param(1);
+    cu = camera_param(2);
+    cv = camera_param(3);
 
-    K = []
+    % Computation matrices
+    K = [fpixels,0,cu;0,fpixels,cv;0,0,1];
 end
-
