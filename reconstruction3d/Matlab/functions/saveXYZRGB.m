@@ -24,7 +24,7 @@ function [ saved ] = saveXYZRGB( points3d, rgb_image, file_out, separator )
     %TODO: check if it is saved correclty
     % gvillalonga: I do not see how to do it...
     
-    saved = True
+    saved = true;
 end
 
 function [points3d_rgb] = fuseRGB( points3d, rgb_image )
