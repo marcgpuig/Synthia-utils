@@ -41,6 +41,8 @@ function [done] = test( path, name_func, frame_number )
         for i=1:length(img_files)
             if img_files(i).name(1:end-4)==frame_number_string
                 img_files = [img_files(i)];
+                depth_files = [depth_files(i)];
+                data_files = [data_files(i)];
                 break
             end
         end
@@ -48,33 +50,48 @@ function [done] = test( path, name_func, frame_number )
     
     % Read for each image
     for i=1:length(img_files)
-        disp(['converting image ' num2str(i) ': ' img_files(i).name])
+        if (mod(i,10) == 0)
+            disp(['converting image ' num2str(i) ': ' img_files(i).name])
 
-        file_out = [out_dir img_files(i).name(1:end-3) 'ply'];
-        
-        % Read Position Matrices
-        M = loadPose([data_dir data_files(i).name]);
-        R = M(1:3,1:3);
-        T = M(1:3,4);
+            file_out = [out_dir img_files(i).name(1:end-3) 'ply'];
 
-        % Read rgb image
-        img = imread([img_dir img_files(i).name]);
+            % Read Position Matrices
+            M = loadPose([data_dir data_files(i).name]);
+            R = M(1:3,1:3);
+            T = M(1:3,4);
 
-        % Read depth image
-        wz = double(imread([depth_dir depth_files(i).name]))/100.;       
+            % Read rgb image
+            img = imread([img_dir img_files(i).name]);
 
-        % test conversion function
-        switch (name_func)
-            case 'image2camera3d'
-                [ points3d ] = image2camera3d( wz, K );
-            otherwise
-                disp(['function not defined: ' name_func]);
-                points3d = [];
+            % Read depth image
+            wz = -double(imread([depth_dir depth_files(i).name]))/100.;   
+            wz = wz(:,:,1);
+
+            % Undefined depth mask
+            mask = wz ~= 65535/100.;
+
+            %wz = wz(index)
+            % test conversion function
+            save = true; % change to save
+            switch (name_func)
+                case 'image2camera3d'
+                    [ points3d ] = image2camera3d( wz, mask, K );
+                case 'image2world3d'
+                    [ points3d ] = image2camera3d( wz, mask, K );
+                    [ points3d ] = image2world3d( points3d, M );
+                otherwise
+                    disp(['function not defined: ' name_func]);
+                    save = false;
+                    points3d = [];
+            end
+
+            if save == true
+                % save file
+                saveXYZRGB(points3d, img(repmat(mask,[1,1,3])), file_out);
+            end
+
+            done = true;
         end
-        
-        % save file
-        saveXYZRGB(points3d, img, file_out);
-        done = true;
     end
 end
 

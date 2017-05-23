@@ -1,4 +1,4 @@
-function [ points3d ] = image2camera3d( depth_img, K )
+function [ points3d ] = image2camera3d( depth_img, mask, K )
 %IMAGE2CAMERA3D 
 %   Generate a pointcloud on camera coordinates given a depth image and K 
 %   camera parameters matrix.
@@ -36,7 +36,7 @@ function [ points3d ] = image2camera3d( depth_img, K )
     u = reshape(u,image_dimensions);
     v = reshape(v,image_dimensions);
     wz = reshape(wz,image_dimensions);
-    point = [u.*wz;v.*wz;wz];
+    point = [u(mask).*wz(mask);v(mask).*wz(mask);wz(mask)];
 
     % 2d to 3d conversion
     points3d = K \ point;

@@ -52,13 +52,15 @@ function [points3d_rgb] = fuseRGB( points3d, rgb_image )
     
     points3d_rgb = points3d;
     
-    if size(rgb_image,1)>0 && size(rgb_image,2)>0 && size(rgb_image,3)>2
-        points3d_rgb(4,:) = reshape(rgb_image(:,:,1),[1,size(rgb_image,1)*size(rgb_image,2)]);
-        points3d_rgb(5,:) = reshape(rgb_image(:,:,2),[1,size(rgb_image,1)*size(rgb_image,2)]);
-        points3d_rgb(6,:) = reshape(rgb_image(:,:,3),[1,size(rgb_image,1)*size(rgb_image,2)]);
+    if size(rgb_image,1)==size(points3d,2)*3
+        points3d_rgb(4,:) = rgb_image(1:size(points3d_rgb,2),1);
+        points3d_rgb(5,:) = rgb_image(size(points3d_rgb,2)+1:2*size(points3d_rgb,2),1);
+        points3d_rgb(6,:) = rgb_image(2*size(points3d_rgb,2)+1:end,1);
     else
+        size(rgb_image)
+        size(points3d)
         disp(['WARNING: RGB image has not the correct size: [' 
-            num2str(size(rgb_image,1)) ', ' num2str(size(rgb_image,2)) ', '
-            num2str(size(rgb_image,3)) ']'])
+            num2str(size(rgb_image,1)) ', '
+            num2str(size(rgb_image,2)) ']'])
     end
 end

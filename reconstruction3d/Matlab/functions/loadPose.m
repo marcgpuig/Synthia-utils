@@ -16,7 +16,6 @@ function [ M ] = loadPose( file )
     if exist(file, 'file') == 2
         % Read camera parameters
         M = reshape(load(file),[4,4]);
-
     else
         error(['File for Pose matrix does not exist: ' file])
     end
