@@ -1,7 +1,7 @@
-function [a] = test( path, name_func, frame_number )
+function [done] = test( path, name_func, frame_number )
 %TEST Summary of this function goes here
-%   Detailed explanation goes here
-    
+%   TODO: Detailed explanation goes here
+
     if path(end) ~= '/'
         path(end+1) = '/';
     end
@@ -27,6 +27,7 @@ function [a] = test( path, name_func, frame_number )
         disp(['Images files: ' num2str(length(img_files))])
         disp(['Depth files: ' num2str(length(depth_files))])
         disp(['Data files: ' num2str(length(data_files))])
+        done = false;
         return 
     end
 
@@ -71,10 +72,9 @@ function [a] = test( path, name_func, frame_number )
                 points3d = [];
         end
         
-        
         % save file
         saveXYZRGB(points3d, img, file_out);
-        
+        done = true;
     end
 end
 

@@ -14,12 +14,20 @@ function [ saved ] = saveXYZRGB( points3d, rgb_image, file_out, separator )
 %    - saved: bool. Return True if the file is saved succesfuly.
 
     if nargin < 4
-        separator = ',';
+        separator = ' ';
     end
     
     M = fuseRGB(points3d,rgb_image);
     
-    dlmwrite(file_out, M', 'delimiter', separator)
+    % (Polygon File Format) PLY header
+    vertex_count = size(M,2);
+    header = ['ply\nformat ascii 1.0\nelement vertex ' num2str(vertex_count) '\nproperty float32 x\nproperty float32 y\nproperty float32 z\nproperty uchar red\nproperty uchar green\nproperty uchar blue\nend_header\n'];
+    file_id = fopen(file_out,'wt');
+    fprintf(file_id, header);
+    fclose(file_id);
+    
+    % Write PLY data
+    dlmwrite(file_out, M', 'delimiter', separator, '-append');
     
     %TODO: check if it is saved correclty
     % gvillalonga: I do not see how to do it...
