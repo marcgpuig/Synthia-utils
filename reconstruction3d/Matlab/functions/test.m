@@ -93,7 +93,6 @@ function [done] = test( path, name_func, views, frame_number)
                 case 'image2camera3d'
                     [ points3d ] = image2camera3d( wz, mask, Q );
                 case 'image2world3d'
-    %                 [ points3d ] = image2world3d( wz, mask, K, M );
                     [ points3d ] = image2camera3d( wz, mask, Q );
                     [ points3d ] = camera3d2world3d( points3d, M );
                 otherwise
