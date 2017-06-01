@@ -17,7 +17,7 @@ function [ points3d ] = camera3d2world3d( points, M )
     points(4,:) = 1;
     
     % Unity bug on computing Pose Matrix (It expect Z to be negative)
-    points(3,:) = -points(3,:);
+    M(1:3,3) = -M(1:3,3)
     
     points3d = M * points;
     points3d(1,:) = points3d(1,:) ./ points3d(4,:);

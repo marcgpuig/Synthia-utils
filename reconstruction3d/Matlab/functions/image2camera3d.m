@@ -37,7 +37,7 @@ function [ points3d ] = image2camera3d( depth_img, mask, Q )
     u = reshape(u,image_dimensions);
     v = reshape(v,image_dimensions);
     wz = reshape(wz,image_dimensions);
-    b = -1.0/Q(4,3);
+    b = 1.0/Q(4,3);
     f = Q(3,4);
     point = [u(mask);v(mask);(f*b)./wz(mask);ones(size(wz(mask)))];
 

@@ -21,7 +21,7 @@ function [ K ] = loadQ( file )
 
         % Computation matrices
 %         K = [fpixels,0,cu;0,fpixels,cv;0,0,1];
-        K = [1,0,0,-cu;0,1,0,-cv;0,0,0,fpixels;0,0,-1.0/b,0];
+        K = [1,0,0,-cu;0,1,0,-cv;0,0,0,fpixels;0,0,1.0/b,0];
         
     else
         error(['Parameters file for Q matrix does not exist: ' file])
