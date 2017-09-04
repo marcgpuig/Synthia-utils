@@ -11,9 +11,9 @@ function [ points3d ] = image2camera3d( depth_img, mask, Q )
 %    coordinates to world coordinates
 %
 %    Return:
-%    - points3d: point cloud with size [6, with * heigh]. The frist 3
-%    channels are [X Y Z] 3D coordinates. If the image is null or K is not 
-%    a 3x3 matrix, it returns an error.
+%    - points3d: point cloud with size [4, with * heigh]. The frist 4
+%    channels are [X Y Z 1] 3D coordinates. If the image is null or Q is not 
+%    a 4x4 matrix, it returns an error.
 
     % Read depth image
     wz = depth_img(:,:,1);
